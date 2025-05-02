@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  # ✅ import CORS middleware
 
 from database import init_db
-from routers import appointment, doctor
+from routers import appointment, doctor, image
 
 app = FastAPI()
 
@@ -21,3 +21,4 @@ async def startup_event():
 
 app.include_router(appointment.router)
 app.include_router(doctor.router)
+app.include_router(image.router)

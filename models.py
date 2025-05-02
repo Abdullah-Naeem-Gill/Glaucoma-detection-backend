@@ -21,3 +21,8 @@ class Doctor(SQLModel, table=True):
     rating: int
     available_time: str
     fees: int
+
+class Image(SQLModel, table=True):
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    doctor_id: UUID
+    image_path: str

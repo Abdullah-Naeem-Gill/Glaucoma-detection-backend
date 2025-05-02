@@ -33,3 +33,13 @@ class CreateDoctor(BaseDoctor):
 
 class ReadDoctor(BaseDoctor):
     id: UUID
+
+
+
+from pydantic import BaseModel
+from uuid import UUID
+
+
+class ImageUploadResponse(BaseModel):
+    doctor_id: UUID
+    image_url: str
