@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr
 from datetime import time, date
 from uuid import UUID
 
+
 class BaseAppointment(BaseModel):
     name: str
     email: EmailStr
@@ -12,6 +13,7 @@ class BaseAppointment(BaseModel):
 
 class AppointmentCreate(BaseAppointment):
     pass
+
 
 class AppointmentRead(BaseAppointment):
     id: UUID
@@ -33,11 +35,6 @@ class CreateDoctor(BaseDoctor):
 
 class ReadDoctor(BaseDoctor):
     id: UUID
-
-
-
-from pydantic import BaseModel
-from uuid import UUID
 
 
 class ImageUploadResponse(BaseModel):
