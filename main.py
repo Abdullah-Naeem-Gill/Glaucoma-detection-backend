@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  # ✅ import CORS middleware
 
-from database import init_db
+from Core.database import init_db
 from routers import AppointmentForm, appointment, doctor, image
 
 app = FastAPI()

@@ -1,10 +1,14 @@
 from uuid import UUID
 from sqlmodel import Session
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import Appointment, AppointmentForm, Doctor, Image
+from models.appointment import Appointment
+from models.AppointmentForm import AppointmentForm
+from models.doctor import Doctor
+from models.image import Image
 from sqlalchemy.future import select
-from schemas import AppointmentCreate, CreateAppointmentForm, CreateDoctor
-
+from interfaces.AppointmentForm import CreateAppointmentForm
+from interfaces.appointment import AppointmentCreate
+from interfaces.doctor import CreateDoctor
 
 async def create_appointment(db: Session, request: AppointmentCreate):
     appointment = Appointment(**request.dict())

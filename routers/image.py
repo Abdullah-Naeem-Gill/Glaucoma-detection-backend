@@ -4,10 +4,10 @@ from pathlib import Path
 from uuid import UUID
 from fastapi.responses import FileResponse
 
-from database import get_db
-from crud import save_image_record, get_image_by_doctor_id
-from models import Doctor  # Make sure you have this model
-from schemas import ImageUploadResponse
+from Core.database import get_db
+from Services.crud import save_image_record, get_image_by_doctor_id
+from models.doctor import Doctor
+from interfaces.image import ImageUploadResponse
 
 router = APIRouter(prefix="/images", tags=["Images"])
 

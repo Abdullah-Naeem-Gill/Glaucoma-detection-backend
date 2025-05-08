@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db
-from schemas import CreateDoctor, ReadDoctor
-from crud import create_doctor, get_all_doctors
+from Core.database import get_db
+from interfaces.doctor import CreateDoctor, ReadDoctor
+from Services.crud import create_doctor, get_all_doctors
 from typing import List
 
 router = APIRouter(prefix="/doctors", tags=["Doctors"])

@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
-import schemas, crud, models
-from database import get_db
+import interfaces.AppointmentForm as schemas, Services.crud as crud
+from Core.database import get_db
 
 router = APIRouter(
     prefix="/appointment/form",
