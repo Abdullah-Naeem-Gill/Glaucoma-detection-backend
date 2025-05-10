@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
-import interfaces.AppointmentForm as schemas, Services.crud as crud
+from typing import List
+import interfaces.AppointmentForm as schemas
+import Services.crud as crud
 from Core.database import get_db
 
 router = APIRouter(
@@ -11,10 +11,12 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=schemas.ReadAppointmentForm)
-async def appointment_form(appointment: schemas.CreateAppointmentForm, db: AsyncSession = Depends(get_db)):
-    return await crud.create_appointment_form(db, appointment)
+async def appointment_form(
+    appointment: schemas.CreateAppointmentForm,
+    db: AsyncSession = Depends(get_db)
+):
+    return await crud.create_appointment_form_async(db, appointment)
 
 @router.get("/", response_model=List[schemas.ReadAppointmentForm])
 async def read_appointments_form(db: AsyncSession = Depends(get_db)):
-    return await crud.get_appointments_form(db)
-
+    return await crud.get_appointments_form_async(db)

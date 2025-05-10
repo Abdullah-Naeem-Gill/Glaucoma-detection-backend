@@ -21,6 +21,10 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 engine = create_async_engine(DATABASE_URL, echo=True)
+# Add this after creating the engine
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
 SessionLocal = sessionmaker(
     bind=engine,          
