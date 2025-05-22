@@ -18,3 +18,12 @@ class CreateDoctor(BaseDoctor):
 
 class ReadDoctor(BaseDoctor):
     id: UUID
+
+class UpdateDoctor(BaseModel):
+    name: str | None = None
+    profession: str | None = None
+    experience: int | None = None
+    gender: str | None = None
+    rating: int | None = None
+    available_time: str | None = None
+    fees: int | None = None

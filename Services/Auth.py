@@ -33,13 +33,20 @@ def decode_access_token(token: str):
 # Token validation with role checking
 bearer_scheme = HTTPBearer()
 
-def verify_role(is_doctor: bool = False):
+def verify_role(is_doctor: bool = False, is_patient: bool = False):
     def role_dependency(token: HTTPAuthorizationCredentials = Security(bearer_scheme)):
         payload = decode_access_token(token.credentials)
         if not payload:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
+        
         role = payload.get("role")
+        if role not in ("doctor", "patient"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid role in token")
+        
         if is_doctor and role != "doctor":
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: Doctors only")
+        if is_patient and role != "patient":
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: Patients only")
+        
         return payload
     return role_dependency
