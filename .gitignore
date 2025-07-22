@@ -48,6 +48,7 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+temp_auto_push.bat
 nosetests.xml
 coverage.xml
 *.cover
@@ -62,7 +63,6 @@ coverage.xml
 .ipynb_checkpoints
 
 # VS Code
-.vscode/
 
 # PyCharm
 .idea/
@@ -76,8 +76,6 @@ ehthumbs.db
 Desktop.ini
 
 # dotenv
-.env
-.env.*
 
 # Logs
 *.log
@@ -99,3 +97,8 @@ media/
 **/*.pyc
 **/*.pyo
 **/*.pyd
+.gitignore
+temp_interactive_push.bat
+branch_structure.json
+config.bat
+node_modules
