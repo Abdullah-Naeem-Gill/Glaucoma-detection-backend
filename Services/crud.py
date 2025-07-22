@@ -176,9 +176,13 @@ async def get_all_patients_async(db: AsyncSession):
     return result.scalars().all()
 
 
-async def save_chat_message_async(db, sender_email: str, receiver_email: str, message: str):
+async def save_chat_message_async(db, sender_email: str, receiver_email: str, message: str, image_data: str = None):
     chat_message = ChatMessage(
-        sender_email=sender_email, receiver_email=receiver_email, message=message)
+        sender_email=sender_email,
+        receiver_email=receiver_email,
+        message=message,
+        image_data=image_data
+    )
     db.add(chat_message)
     await db.commit()
     await db.refresh(chat_message)

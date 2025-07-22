@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel, Field
 from uuid import UUID, uuid4
 from datetime import datetime
+from typing import Optional
 
 
 class ChatMessage(SQLModel, table=True):
@@ -8,4 +9,5 @@ class ChatMessage(SQLModel, table=True):
     sender_email: str
     receiver_email: str
     message: str
+    image_data: Optional[str] = None  # Base64 encoded image data
     timestamp: datetime = Field(default_factory=datetime.utcnow)
