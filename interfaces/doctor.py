@@ -1,6 +1,8 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import time, date
 from uuid import UUID
+
 
 class BaseDoctor(BaseModel):
     name: str
@@ -10,6 +12,7 @@ class BaseDoctor(BaseModel):
     rating: int
     available_time: str
     fees: int
+    email: Optional[str] = None
 
 
 class CreateDoctor(BaseDoctor):
@@ -19,6 +22,7 @@ class CreateDoctor(BaseDoctor):
 class ReadDoctor(BaseDoctor):
     id: UUID
 
+
 class UpdateDoctor(BaseModel):
     name: str | None = None
     profession: str | None = None
@@ -27,3 +31,4 @@ class UpdateDoctor(BaseModel):
     rating: int | None = None
     available_time: str | None = None
     fees: int | None = None
+    email: str | None = None

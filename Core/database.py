@@ -6,10 +6,12 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 from dotenv import load_dotenv
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:abdullah420@localhost:5432/glaucoma-detection")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", "postgresql+asyncpg://postgres:abdullah420@localhost:5432/glaucoma-detection")
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set in environment variables")
@@ -21,10 +23,6 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 engine = create_async_engine(DATABASE_URL, echo=True)
-# Add this after creating the engine
-async def init_db():
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
 
 SessionLocal = sessionmaker(
     bind=engine,
@@ -32,23 +30,49 @@ SessionLocal = sessionmaker(
     expire_on_commit=False
 )
 
+
 async def get_db() -> AsyncSession:
-    
     try:
         async with SessionLocal() as session:
             yield session
     except SQLAlchemyError as e:
         logger.error(f"Database connection error: {e}")
-        raise HTTPException(status_code=500, detail="Database connection error")
+        raise HTTPException(
+            status_code=500, detail="Database connection error")
+
 
 async def init_db() -> None:
-    
     try:
         async with engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
+            # Add email column to doctor table if it doesn't exist
+            await add_email_column_to_doctor()
     except SQLAlchemyError as e:
         logger.error(f"Error initializing the database: {e}")
-        raise HTTPException(status_code=500, detail="Error initializing the database")
+        raise HTTPException(
+            status_code=500, detail="Error initializing the database")
     else:
         logger.info("Database initialized successfully.")
 
+
+async def add_email_column_to_doctor():
+    """Add email column to doctor table if it doesn't exist"""
+    try:
+        async with engine.begin() as conn:
+            # Check if email column exists
+            result = await conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'doctor' AND column_name = 'email'
+            """))
+
+            if not result.fetchone():
+                # Add email column
+                await conn.execute(text("ALTER TABLE doctor ADD COLUMN email VARCHAR(255)"))
+                logger.info("Added email column to doctor table")
+            else:
+                logger.info("Email column already exists in doctor table")
+
+    except SQLAlchemyError as e:
+        logger.error(f"Error adding email column to doctor table: {e}")
+        # Don't raise exception here as it might be a duplicate column error

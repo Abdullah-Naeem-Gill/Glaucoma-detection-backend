@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from Core.database import init_db
+from controllers import chat
 from controllers import AppointmentForm, DoctorAuth, appointment, doctor, image, patient
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,3 +29,4 @@ app.include_router(image.router)
 app.include_router(AppointmentForm.router)
 app.include_router(DoctorAuth.router)
 app.include_router(patient.router)
+app.include_router(chat.router)
